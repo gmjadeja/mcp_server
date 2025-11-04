@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ lesson.title }} - {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Breadcrumb -->
+    <nav class="mb-6 text-sm">
+        <a href="{% url 'home' %}" class="text-indigo-600 hover:text-indigo-800">Home</a>
+        <span class="mx-2 text-gray-400">/</span>
+        <a href="{% url 'course_detail' course.slug %}" class="text-indigo-600 hover:text-indigo-800">{{ course.title }}</a>
+        <span class="mx-2 text-gray-400">/</span>
+        <span class="text-gray-600">{{ lesson.title }}</span>
+    </nav>
+    
+    <!-- Lesson Content -->
+    <article class="bg-white rounded-lg shadow-md p-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ lesson.title }}</h1>
+        
+        <div class="prose max-w-none mb-8">
+            {{ lesson.content_html|safe }}
+        </div>
+        
+        <!-- Navigation -->
+        <div class="flex justify-between items-center pt-8 border-t mt-8">
+            {% if prev_lesson %}
+            <a href="{{ prev_lesson.get_absolute_url }}" class="text-indigo-600 hover:text-indigo-800">
+                <i class="fas fa-arrow-left mr-2"></i>Previous: {{ prev_lesson.title }}
+            </a>
+            {% else %}
+            <span></span>
+            {% endif %}
+            
+            {% if next_lesson %}
+            <a href="{{ next_lesson.get_absolute_url }}" class="text-indigo-600 hover:text-indigo-800">
+                Next: {{ next_lesson.title }}<i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            {% else %}
+            <a href="{% url 'course_detail' course.slug %}" class="text-indigo-600 hover:text-indigo-800">
+                Back to Course<i class="fas fa-arrow-right ml-2"></i>
+            </a>
+            {% endif %}
+        </div>
+    </article>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.prose {
+    color: #374151;
+    line-height: 1.75;
+}
+.prose h2 {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+.prose h3 {
+    font-size: 1.25em;
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.75em;
+}
+.prose code {
+    background-color: #f3f4f6;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+}
+.prose pre {
+    background-color: #1f2937;
+    color: #f9fafb;
+    padding: 1em;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin: 1.5em 0;
+}
+.prose pre code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+}
+.prose ul, .prose ol {
+    margin: 1em 0;
+    padding-left: 2em;
+}
+.prose li {
+    margin: 0.5em 0;
+}
+</style>
+{% endblock %}
+

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ lab.title }} - Lab{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Lab Header -->
+    <div class="mb-8">
+        <div class="flex items-center mb-4">
+            <span class="bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded">
+                {{ lab.get_difficulty_display }}
+            </span>
+            <span class="ml-4 text-gray-500">
+                <i class="fas fa-clock mr-1"></i>{{ lab.estimated_time }} minutes
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ lab.title }}</h1>
+        <div class="prose max-w-none mb-4">
+            {{ lab.description_html|safe }}
+        </div>
+    </div>
+    
+    <!-- Instructions -->
+    <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-tasks mr-2 text-indigo-600"></i>Instructions
+        </h2>
+        <div class="prose max-w-none">
+            {{ lab.instructions_html|safe }}
+        </div>
+    </div>
+    
+    <!-- Starter Code -->
+    {% if lab.starter_code %}
+    <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-code mr-2 text-indigo-600"></i>Starter Code
+        </h2>
+        <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto"><code class="language-python">{{ lab.starter_code }}</code></pre>
+    </div>
+    {% endif %}
+    
+    <!-- Code Editor Area (for students to write their solution) -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-edit mr-2 text-indigo-600"></i>Your Solution
+        </h2>
+        <textarea class="w-full h-64 p-4 border border-gray-300 rounded-lg font-mono text-sm" placeholder="Write your solution here..."></textarea>
+        <div class="mt-4 flex justify-end">
+            <button class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
+                <i class="fas fa-check mr-2"></i>Submit Solution
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

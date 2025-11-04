@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Labs - MCP Server Education{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-8">Hands-on Labs</h1>
+    
+    <!-- Filter -->
+    <div class="mb-8">
+        <div class="flex space-x-4">
+            <a href="{% url 'lab_list' %}" class="px-4 py-2 rounded {% if not difficulty_filter %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                All
+            </a>
+            <a href="?difficulty=easy" class="px-4 py-2 rounded {% if difficulty_filter == 'easy' %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                Easy
+            </a>
+            <a href="?difficulty=medium" class="px-4 py-2 rounded {% if difficulty_filter == 'medium' %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                Medium
+            </a>
+            <a href="?difficulty=hard" class="px-4 py-2 rounded {% if difficulty_filter == 'hard' %}bg-indigo-600 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-gray-300{% endif %}">
+                Hard
+            </a>
+        </div>
+    </div>
+    
+    <!-- Labs Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for lab in labs %}
+        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+            <div class="flex items-center justify-between mb-4">
+                <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
+                    {{ lab.get_difficulty_display }}
+                </span>
+                <span class="text-gray-500 text-sm">
+                    <i class="fas fa-clock mr-1"></i>{{ lab.estimated_time }} min
+                </span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ lab.title }}</h3>
+            <p class="text-gray-600 text-sm mb-4">{{ lab.description|truncatewords:20 }}</p>
+            {% if lab.course %}
+            <p class="text-xs text-gray-500 mb-4">
+                <i class="fas fa-book mr-1"></i>Part of: {{ lab.course.title }}
+            </p>
+            {% endif %}
+            <a href="{{ lab.get_absolute_url }}" class="text-indigo-600 font-semibold hover:text-indigo-800">
+                Start Lab <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+        {% empty %}
+        <div class="col-span-3 text-center py-12">
+            <p class="text-gray-500 text-lg">No labs available yet. Check back soon!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

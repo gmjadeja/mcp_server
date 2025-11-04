@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ path.name }} - Learning Path{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-lg shadow-md p-8 mb-8">
+        {% if path.icon %}
+        <i class="{{ path.icon }} text-5xl text-indigo-600 mb-4"></i>
+        {% endif %}
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ path.name }}</h1>
+        <p class="text-xl text-gray-600 mb-6">{{ path.description }}</p>
+        {% if path.provider %}
+        <div class="flex items-center">
+            <i class="fas fa-tag mr-2 text-gray-500"></i>
+            <span class="text-gray-700">{{ path.provider.name }}</span>
+        </div>
+        {% endif %}
+    </div>
+    
+    {% if courses %}
+    <h2 class="text-3xl font-bold text-gray-900 mb-6">Courses in this Path</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for course in courses %}
+        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+            {% if course.image %}
+            <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-full h-48 object-cover">
+            {% else %}
+            <div class="w-full h-48 bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <i class="fas fa-book text-6xl text-white opacity-50"></i>
+            </div>
+            {% endif %}
+            <div class="p-6">
+                <div class="flex items-center mb-2">
+                    <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2 py-1 rounded">
+                        {{ course.get_difficulty_level_display }}
+                    </span>
+                    <span class="ml-auto text-gray-500 text-sm">
+                        <i class="fas fa-clock mr-1"></i>{{ course.estimated_time }} min
+                    </span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ course.title }}</h3>
+                <p class="text-gray-600 text-sm mb-4">{{ course.short_description }}</p>
+                <a href="{{ course.get_absolute_url }}" class="text-indigo-600 font-semibold hover:text-indigo-800">
+                    View Course <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <p class="text-gray-500 text-lg">No courses available in this path yet.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+

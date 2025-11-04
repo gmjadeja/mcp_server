@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course.title }} - MCP Server Education{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Course Header -->
+    <div class="mb-8">
+        <div class="flex items-center mb-4">
+            <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded">
+                {{ course.get_difficulty_level_display }}
+            </span>
+            <span class="ml-4 text-gray-500">
+                <i class="fas fa-clock mr-1"></i>{{ course.estimated_time }} minutes
+            </span>
+        </div>
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ course.title }}</h1>
+        <p class="text-xl text-gray-600">{{ course.description }}</p>
+    </div>
+    
+    <!-- Lessons Section -->
+    {% if lessons %}
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-book-open mr-2 text-indigo-600"></i>Lessons
+        </h2>
+        <div class="space-y-4">
+            {% for lesson in lessons %}
+            <div class="border-l-4 border-indigo-500 pl-4 py-2">
+                <a href="{{ lesson.get_absolute_url }}" class="text-lg font-semibold text-gray-900 hover:text-indigo-600">
+                    {{ lesson.order }}. {{ lesson.title }}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Labs Section -->
+    {% if labs %}
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+            <i class="fas fa-flask mr-2 text-indigo-600"></i>Hands-on Labs
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for lab in labs %}
+            <div class="border rounded-lg p-4 hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2 py-1 rounded">
+                        {{ lab.get_difficulty_display }}
+                    </span>
+                    <span class="text-gray-500 text-sm">
+                        <i class="fas fa-clock mr-1"></i>{{ lab.estimated_time }} min
+                    </span>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">{{ lab.title }}</h3>
+                <p class="text-gray-600 text-sm mb-3">{{ lab.description|truncatewords:15 }}</p>
+                <a href="{{ lab.get_absolute_url }}" class="text-indigo-600 text-sm font-semibold hover:text-indigo-800">
+                    Start Lab <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
